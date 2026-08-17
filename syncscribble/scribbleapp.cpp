@@ -238,6 +238,7 @@ void ScribbleApp::init()
 
   win = createMainWindow();  // probably should be done in ScribbleApp
   win->sdlWindow = sdlWindow;  // window created by Application in order to create an OpenGL context
+  SDL_StartTextInput();
   win->addHandler([this](SvgGui*, SDL_Event* event){ return sdlEventHandler(event); });
 
   ScribbleDoc* doc = new ScribbleDoc(this, cfg, scribbleMode);
@@ -646,6 +647,7 @@ bool ScribbleApp::sdlEventHandler(SDL_Event* event)
     // only window event sent at start on Android is ENTER
     if(event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED
         || (PLATFORM_ANDROID && event->window.event == SDL_WINDOWEVENT_ENTER)) {
+      SDL_StartTextInput();
       if(delayedShowDocList) {
         delayedShowDocList = false;
         // allow initial doc list to be canceled on desktop
